@@ -8,6 +8,7 @@ At the beginning of EVERY session, read these three rules files:
 - `/docs/rules/rules.fullstack.md` (Architecture, module boundaries, quality gates)
 - `/docs/rules/rules.frontend.md` (Next.js, security, slots contract)
 - `/docs/rules/rules.backend.md` (Worker pipeline, LLM integration, observability)
+- `/docs/product/PROJECT_CONTEXT.md** first, then re-read this rules file.
 
 ## ⚡ Quick Reference (Key Constraints)
 
