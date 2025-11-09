@@ -1,0 +1,93 @@
+# IndianWalls Development Rules
+
+This project follows strict monorepo hygiene and development standards.
+
+## 🚨 CRITICAL: Read Rules at Session Start
+
+At the beginning of EVERY session, read these three rules files:
+- `/docs/rules/rules.fullstack.md` (Architecture, module boundaries, quality gates)
+- `/docs/rules/rules.frontend.md` (Next.js, security, slots contract)
+- `/docs/rules/rules.backend.md` (Worker pipeline, LLM integration, observability)
+
+## ⚡ Quick Reference (Key Constraints)
+
+### Repository Layout (MANDATORY)
+- **Markdown files:** Only in `/docs/**` (except root README.md)
+- **Backend code:** Only in `/apps/worker/**`
+- **Frontend code:** Only in `/apps/web/**`
+- **Shared code:** Only in `/packages/shared/**`
+- **Schemas:** Only in `/packages/schemas/**`
+- **Config:** Only in `/config/**` or workspace root
+- **Generated assets:** `/generated/**` (gitignored, never committed)
+
+### Import Boundaries (ENFORCED)
+```typescript
+// Path Aliases
+@web/*     → /apps/web/*       (can import @shared/*, @schemas/*)
+@worker/*  → /apps/worker/src/* (can import @shared/*, @schemas/*)
+@shared/*  → /packages/shared/* (pure, no framework deps)
+@schemas/* → /packages/schemas/*
+
+// FORBIDDEN
+❌ @web/* CANNOT import @worker/*
+❌ @worker/* CANNOT import @web/*
+```
+
+### Quality Gates (Before Every Commit)
+```bash
+pnpm lint            # ESLint (zero warnings)
+pnpm typecheck       # TypeScript strict mode
+pnpm schema:validate # JSON Schema validation
+pnpm repo:check      # File placement enforcement
+```
+
+All enforced via Husky pre-commit hook.
+
+### Security (Non-Negotiable)
+- **CSP headers:** Configured in `next.config.js` (no `unsafe-inline` scripts)
+- **HTML sanitisation:** DOMPurify before storage/display
+- **Secrets:** Environment variables only (never hardcoded)
+- **No PII in logs:** Redact emails, addresses, identifiers
+
+### Worker Pipeline (6 Idempotent Steps)
+1. **normalise** → Validate & normalise input
+2. **fetchers** → RERA/Infra/Market data (cache 24–72h)
+3. **synthesise** → OpenAI Structured Outputs (JSON Schema validation)
+4. **renderCharts** → Chart.js → PNG → S3
+5. **composeHtml** → Assemble + sanitise HTML slots
+6. **finalise** → Update DB, mark complete
+
+Each step checkpointed in DB. Safe to retry.
+
+### OpenAI Integration
+- **Model:** `gpt-4o-2024-08-06` (Structured Outputs)
+- **Temperature:** 0.2–0.3 (deterministic)
+- **Schema:** `/packages/schemas/llm_output.json`
+- **Validation:** AJV strict mode + repair loop (max 2 attempts)
+
+### Tech Stack
+- **Frontend:** Next.js 14 (App Router), TypeScript strict, Tailwind CSS, Chart.js, DOMPurify
+- **Backend:** Node.js 20, TypeScript strict, BullMQ (Redis), Prisma (PostgreSQL)
+- **Storage:** S3-compatible (charts, PDFs)
+- **Monorepo:** pnpm workspaces
+
+## 📋 Before Merge Checklist
+
+- [ ] Files in correct directories (passed `pnpm repo:check`)
+- [ ] All quality gates pass (lint, typecheck, schema:validate, repo:check)
+- [ ] TypeScript strict mode (no `any`, no unsafe assertions)
+- [ ] Import boundaries respected (no cross-layer imports)
+- [ ] HTML sanitised (DOMPurify)
+- [ ] No secrets in code
+- [ ] No PII in logs
+- [ ] Tests written (>80% coverage for new code)
+- [ ] Worker steps are idempotent
+
+## 🔄 Living Document
+
+These rules evolve. Always check version numbers in `/docs/rules/*.md` and read changelogs.
+
+---
+
+**Version:** 1.0.0  
+**Last Updated:** 2025-11-09
