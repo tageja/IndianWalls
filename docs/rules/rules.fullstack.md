@@ -1,5 +1,8 @@
 # Full-Stack Development Rules – IndianWalls
 
+## Context Loader (CRITICAL)
+**At session start, read `/docs/product/PROJECT_CONTEXT.md` and the three rules files before planning or proposing changes.**
+
 ## Scope & Responsibilities
 This document governs architecture, module boundaries, cross-cutting concerns, and quality gates for the entire IndianWalls platform (Next.js frontend + Node.js worker backend).
 
