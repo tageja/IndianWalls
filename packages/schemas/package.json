@@ -1,0 +1,13 @@
+{
+  "name": "@indianwalls/schemas",
+  "version": "0.1.0",
+  "description": "JSON Schema definitions for IndianWalls",
+  "main": "index.js",
+  "files": [
+    "*.json"
+  ],
+  "keywords": [
+    "schemas",
+    "json-schema"
+  ]
+}

@@ -1,0 +1,110 @@
+/**
+ * Print-friendly stylesheet for generated reports
+ * Optimised for A4 paper (210mm × 297mm)
+ */
+
+@media print {
+  /* Hide interactive elements */
+  nav,
+  footer,
+  .no-print,
+  button,
+  a[href^='http']:not([href*='#']) {
+    display: none !important;
+  }
+
+  /* Page setup */
+  @page {
+    margin: 2cm;
+    size: A4 portrait;
+  }
+
+  /* Avoid page breaks inside elements */
+  .slot,
+  .chart-figure,
+  .card,
+  .key-metric {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Force page breaks */
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  /* Typography adjustments for print */
+  body {
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #000;
+    background: white;
+  }
+
+  h1 {
+    font-size: 20pt;
+    font-weight: bold;
+  }
+
+  h2 {
+    font-size: 16pt;
+    font-weight: bold;
+  }
+
+  h3 {
+    font-size: 14pt;
+    font-weight: 600;
+  }
+
+  /* Chart sizing */
+  .chart-figure img {
+    max-width: 100%;
+    height: auto;
+    page-break-inside: avoid;
+  }
+
+  /* Remove shadows and decorations */
+  .shadow-sm,
+  .shadow,
+  .shadow-md,
+  .shadow-lg,
+  .shadow-xl {
+    box-shadow: none !important;
+  }
+
+  /* Ensure links are visible */
+  a {
+    text-decoration: underline;
+    color: #000;
+  }
+
+  a[href^='http']:after {
+    content: ' (' attr(href) ')';
+    font-size: 9pt;
+    color: #666;
+  }
+
+  /* Table styling */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  th {
+    background-color: #f0f0f0 !important;
+    font-weight: bold;
+  }
+
+  /* Optimise for black & white printing */
+  * {
+    -webkit-print-color-adjust: economy;
+    print-color-adjust: economy;
+  }
+}

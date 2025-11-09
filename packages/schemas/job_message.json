@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://indianwalls.com/schemas/job_message.json",
+  "title": "Job Message",
+  "description": "Queue message for report generation job",
+  "type": "object",
+  "required": ["reportId", "userId", "input"],
+  "properties": {
+    "reportId": {
+      "type": "string",
+      "description": "Report unique identifier"
+    },
+    "userId": {
+      "type": "string",
+      "description": "User ID who created the report"
+    },
+    "input": {
+      "type": "object",
+      "required": ["projectName", "location"],
+      "properties": {
+        "projectName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Project name"
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Project location"
+        },
+        "reraId": {
+          "type": "string",
+          "description": "Optional RERA registration ID"
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Additional user notes"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

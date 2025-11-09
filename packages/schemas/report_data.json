@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://indianwalls.com/schemas/report_data.json",
+  "title": "Report Data",
+  "description": "Report data returned by API",
+  "type": "object",
+  "required": ["id", "status", "createdAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Report unique identifier"
+    },
+    "userId": {
+      "type": "string",
+      "description": "User ID who created the report"
+    },
+    "projectName": {
+      "type": "string",
+      "description": "Project name"
+    },
+    "location": {
+      "type": "string",
+      "description": "Project location"
+    },
+    "status": {
+      "enum": ["queued", "processing", "completed", "failed"],
+      "description": "Report generation status"
+    },
+    "htmlSlots": {
+      "type": "object",
+      "description": "HTML content for each slot",
+      "properties": {
+        "slot-hero": {
+          "type": "string"
+        },
+        "slot-key-metrics": {
+          "type": "string"
+        },
+        "slot-chart-1": {
+          "type": "string"
+        },
+        "slot-chart-2": {
+          "type": "string"
+        },
+        "slot-evidence": {
+          "type": "string"
+        }
+      }
+    },
+    "charts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "url", "altText"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Chart identifier"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "CDN URL of chart image"
+          },
+          "altText": {
+            "type": "string",
+            "description": "Accessible alt text"
+          }
+        }
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Creation timestamp"
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Completion timestamp"
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

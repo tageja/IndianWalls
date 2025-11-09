@@ -1,0 +1,161 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://indianwalls.com/schemas/llm_output.json",
+  "title": "LLM Report Output",
+  "description": "Structured output from OpenAI for report generation",
+  "type": "object",
+  "required": ["hero", "keyMetrics", "chartSpecs", "evidence"],
+  "properties": {
+    "hero": {
+      "type": "object",
+      "required": ["title", "subtitle", "summary"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Report title"
+        },
+        "subtitle": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Report subtitle"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Executive summary"
+        }
+      },
+      "additionalProperties": false
+    },
+    "keyMetrics": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": ["label", "value"],
+        "properties": {
+          "label": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "Metric label"
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Metric value"
+          },
+          "trend": {
+            "enum": ["up", "down", "neutral"],
+            "description": "Trend indicator"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "chartSpecs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["type", "title", "data"],
+        "properties": {
+          "type": {
+            "enum": ["bar", "line", "pie", "doughnut"],
+            "description": "Chart type"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Chart title"
+          },
+          "data": {
+            "type": "object",
+            "required": ["labels", "datasets"],
+            "properties": {
+              "labels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "X-axis labels"
+              },
+              "datasets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["label", "data"],
+                  "properties": {
+                    "label": {
+                      "type": "string",
+                      "description": "Dataset label"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      },
+                      "description": "Data points"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["claim", "sources"],
+        "properties": {
+          "claim": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Evidence claim"
+          },
+          "sources": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["url", "publisher", "date", "sha1"],
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "Source URL"
+                },
+                "publisher": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "description": "Publisher name"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Publication date (YYYY-MM-DD)"
+                },
+                "sha1": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{40}$",
+                  "description": "SHA-1 hash of source content"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
